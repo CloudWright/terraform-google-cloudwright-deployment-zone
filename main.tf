@@ -69,6 +69,7 @@ resource "google_service_account" "cloudwright_admin" {
   account_id   = "${var.deployment_zone_namespace}-cw-admin"
   display_name = "${var.deployment_zone_name} CloudWright Admin"
   description = "Used by CloudWright to create and manage resource for the ${var.deployment_zone_name} deployment zone"
+  depends_on = [google_project_service.iam_service, google_project_service.iamcreds_service]
 }
 
 resource "google_service_account" "cloudwright_function" {
@@ -76,6 +77,7 @@ resource "google_service_account" "cloudwright_function" {
   account_id   = "${var.deployment_zone_namespace}-cw-fn"
   display_name = "${var.deployment_zone_name} CloudWright Function"
   description = "Used by CloudWright applications as the Cloud Function service account. Permissions granted to this account are granted to ALL applications in the ${var.deployment_zone_name} deployment zone"
+  depends_on = [google_project_service.iam_service, google_project_service.iamcreds_service]
 }
 
 resource "google_service_account" "cloudwright_invoker" {
@@ -83,12 +85,14 @@ resource "google_service_account" "cloudwright_invoker" {
   account_id   = "${var.deployment_zone_namespace}-cw-invoke"
   display_name = "${var.deployment_zone_name} CloudWright Invoker"
   description = "Used by CloudWright to invoke applications in certain contexts (e.g. Cloud Scheduler)"
+  depends_on = [google_project_service.iam_service, google_project_service.iamcreds_service]
 }
 
 resource "google_storage_bucket" "cloudwright_artifacts" {
   project = var.project_id
   name     = "${var.project_id}-${var.deployment_zone_namespace}-cw-artifacts"
   location = "US"
+  depends_on = [google_project_service.storage_service]
 }
 
 resource "google_storage_bucket_iam_member" "admin_bucket_admin" {
@@ -167,6 +171,7 @@ resource "google_kms_key_ring" "cloudwright_keyring" {
   project = var.project_id
   name     = "${var.deployment_zone_namespace}-cw-keyring"
   location = "global"
+  depends_on = [google_project_service.cloudkms_service]
 }
 
 resource "google_kms_crypto_key" "cloudwright_key" {
