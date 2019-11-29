@@ -14,13 +14,6 @@ resource "google_project_service" "cloudfunctions_service" {
 }
 
 
-resource "google_project_service" "containerregistry_service" {
-  project = var.project_id
-  service = "containerregistry.googleapis.com"
-  disable_on_destroy = false
-}
-
-
 resource "google_project_service" "iamcreds_service" {
   project = var.project_id
   service = "iamcredentials.googleapis.com"
@@ -190,7 +183,7 @@ resource "google_kms_key_ring_iam_member" "admin_own_cloudwright_keyring" {
   member = "serviceAccount:${google_service_account.cloudwright_admin.email}"
 }
 
-resource "google_kms_key_ring_iam_member" "admin_use_cloudwright_keyring" {
+resource "google_kms_key_ring_iam_member" "function_use_cloudwright_keyring" {
   key_ring_id = google_kms_key_ring.cloudwright_keyring.self_link
   role        = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member = "serviceAccount:${google_service_account.cloudwright_function.email}"
