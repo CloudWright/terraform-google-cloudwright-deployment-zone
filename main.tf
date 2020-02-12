@@ -54,6 +54,12 @@ resource "google_project_service" "cloudtasks_service" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "cloudscheduler_service" {
+  project            = "${var.project_id}"
+  service            = "cloudscheduler.googleapis.com"
+  disable_on_destroy = false
+}
+
 # App engine has to exist
 
 resource "google_app_engine_application" "appengine_app" {
