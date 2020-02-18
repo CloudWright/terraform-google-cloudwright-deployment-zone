@@ -87,7 +87,7 @@ resource "google_service_account" "cloudwright_function" {
 
 resource "google_service_account" "cloudwright_invoker" {
   project      = "${var.project_id}"
-  account_id   = "${var.deployment_zone_namespace}-cw-invoke"
+  account_id   = "${var.deployment_zone_namespace}-cw-invk"
   display_name = "${var.deployment_zone_name} CloudWright Invoker"
   description  = "Used by CloudWright to invoke applications in certain contexts (e.g. Cloud Scheduler)"
   depends_on   = [google_project_service.iam_service, google_project_service.iamcreds_service]
