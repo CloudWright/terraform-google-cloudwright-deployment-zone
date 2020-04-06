@@ -94,10 +94,12 @@ resource "google_service_account" "cloudwright_invoker" {
 }
 
 resource "google_storage_bucket" "cloudwright_artifacts" {
-  project    = "${var.project_id}"
-  name       = "${var.project_id}-${var.deployment_zone_namespace}-cw-artifacts"
-  location   = "US"
-  depends_on = [google_project_service.storage_service]
+  project       = "${var.project_id}"
+  name          = "${var.project_id}-${var.deployment_zone_namespace}-cw-artifacts"
+  location      = "US"
+  depends_on    = [google_project_service.storage_service]
+  force_destroy = true
+
 }
 
 resource "google_storage_bucket_iam_member" "admin_bucket_admin" {
@@ -186,8 +188,8 @@ resource "google_kms_key_ring" "cloudwright_keyring" {
 }
 
 resource "google_kms_crypto_key" "cloudwright_key" {
-  name            = "${var.deployment_zone_namespace}-cw-key"
-  key_ring        = google_kms_key_ring.cloudwright_keyring.self_link
+  name     = "${var.deployment_zone_namespace}-cw-key"
+  key_ring = google_kms_key_ring.cloudwright_keyring.self_link
 
   lifecycle {
     prevent_destroy = true
