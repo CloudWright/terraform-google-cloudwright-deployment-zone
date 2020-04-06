@@ -188,7 +188,6 @@ resource "google_kms_key_ring" "cloudwright_keyring" {
 resource "google_kms_crypto_key" "cloudwright_key" {
   name            = "${var.deployment_zone_namespace}-cw-key"
   key_ring        = google_kms_key_ring.cloudwright_keyring.self_link
-  rotation_period = "100000s"
 
   lifecycle {
     prevent_destroy = true
